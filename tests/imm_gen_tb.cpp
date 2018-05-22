@@ -51,17 +51,20 @@ class SIMULATIONTB: public Testbench<Vimm_gen> {
         {0x53B33000, IMM_S,       226618},           // 0xE5600000  |    I   |   256
         {0xE5600000, IMM_S,       -426}};        // 0xE5600000  |    I   |   256
 
+      
+      int num_test;
 
-      for (int num_test = 0; num_test < TOTAL_TESTS; num_test++) {
+      for (num_test = 0; num_test < TOTAL_TESTS; num_test++) {
         m_core->instruction_i = data[num_test][INSTRUCTION];
         m_core->imm_op_i = data[num_test][IMM_OP];
 
         Tick();
-        printf("instruction: %8x | imm: %d | td: %d\n", m_core->instruction_i, m_core->imm_o, data[num_test][IMM_OUT]);
 
         if(m_core->imm_o != data[num_test][IMM_OUT])
-          return num_test;
+          break;
       }
+
+      return num_test;
     }
 };
 
